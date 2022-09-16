@@ -72,3 +72,26 @@ table {
   align-items: center;
   font-size: 8em;
 }
+
+.winner-display {
+  background-color: yellow;
+  height: 350px;
+  width: 350px;
+  margin: auto;
+  margin-top: -370px;
+  position: relative;
+  z-index: 1;
+}
+
+.announced-winner {
+  font-size: 2.5em;
+  text-align: center;
+  padding-top: 60px;;
+}
+
+.replay-button {
+  margin: auto;
+  display: flex;
+  justify-self: center;
+  margin-top: 40px;
+}

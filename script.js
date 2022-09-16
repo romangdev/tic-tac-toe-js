@@ -2,6 +2,17 @@ const boardHTML = document.querySelector(".game-board");
 const topRow = document.querySelectorAll('.top-row-location');
 const midRow = document.querySelectorAll('.mid-row-location');
 const bottomRow = document.querySelectorAll('.bottom-row-location');
+const winnerDisplay = document.querySelector('.winner-display');
+
+let tempWinner = document.createElement('p');
+tempWinner.classList.add('announced-winner');
+winnerDisplay.appendChild(tempWinner);
+tempWinner.textContent = `Roman (x) wins!`;
+
+let replayBtn = document.createElement('button');
+replayBtn.classList.add('replay-button');
+replayBtn.textContent = 'Play Again?'
+winnerDisplay.appendChild(replayBtn);
 
 const gameBoard = (() => {
   let gameBoardArr = [
@@ -41,10 +52,10 @@ const Player = (name, symbol) => {
   };
 };
 
-const p1Name = prompt('First player, what is your name?');
-const p2Name = prompt('Second player, what is your name?');
+// const p1Name = prompt('First player, what is your name?');
+// const p2Name = prompt('Second player, what is your name?');
 
-const p1Symbol = prompt(`${p1Name}, do you want to be \'X\' or \'O\'?`);
+// const p1Symbol = prompt(`${p1Name}, do you want to be \'X\' or \'O\'?`);
 let player1 = Player(p1Name, p1Symbol);
 let player2 = null;
 
@@ -82,7 +93,11 @@ const displayController = (() => {
       for (let i = 0; i < 3; i++) {
         if (row[i] === row[i + 1] && row[i] === row[i + 2] && row[i] !== ' ') {
           if (row[i] === player1.symbol) {
-            alert(`${player1.name} (${player1.symbol}) wins!`);
+            // alert(`${player1.name} (${player1.symbol}) wins!`);
+            let tempWinner = document.createElement('p');
+            winnerDisplay.appendChild(tempWinner);
+            winnerDisplay.textContent = `${player1.name} (${player1.symbol}) wins!`
+
           } else {
             alert(`${player2.name} (${player2.symbol}) wins!`);
           }
