@@ -60,16 +60,18 @@ const displayController = (() => {
 
     if (currentSymbol === player1.symbol) {
       gameBoard.gameBoardArr[selectedRow][selectedColumn] = player1.symbol;
+      gameBoard.renderBoard();
+      setTimeout(() => { checkWinner(); }, 200); 
       currentSymbol = player2.symbol;
     } else {
       gameBoard.gameBoardArr[selectedRow][selectedColumn] = player2.symbol;
+      gameBoard.renderBoard();
+      setTimeout(() => { checkWinner(); }, 200); 
       currentSymbol = player1.symbol;
     }
-    gameBoard.renderBoard();
-    checkWinner();
   });
 
-  const checkWinner = () => {
+  const checkHorizontalWin = () => {
     gameBoard.gameBoardArr.forEach((row) => {
       for (let i = 0; i < 3; i++) {
         if (row[i] === row[i + 1] && row[i] === row[i + 2] && row[i] !== ' ') {
@@ -81,27 +83,41 @@ const displayController = (() => {
         }
       }
     });
+  };
 
+  const checkVerticalWin = () => {
     for (let i = 0; i < 3; i++) {
       if (gameBoard.gameBoardArr[0][i] === gameBoard.gameBoardArr[1][i] && 
           gameBoard.gameBoardArr[0][i] === gameBoard.gameBoardArr[2][i] &&
           gameBoard.gameBoardArr[0][i] !== ' ') {
-        if (gameBoard.gameBoardArr[i][0] === player1.symbol) {
+            
+        if (gameBoard.gameBoardArr[0][i] === player1.symbol) {
           alert(`Player 1 (${currentSymbol} wins)!`);
         } else {
           alert(`Player 2 (${currentSymbol} wins)!`);
         }
-        // but alerting correct winner symbol
       }
     }
   };
+
+  const checkDiagonalWin = () => {
+    if (((gameBoard.gameBoardArr[0][0] === gameBoard.gameBoardArr[1][1] && 
+        gameBoard.gameBoardArr[0][0] === gameBoard.gameBoardArr[2][2]) || 
+        (gameBoard.gameBoardArr[0][2] === gameBoard.gameBoardArr[1][1] && 
+        gameBoard.gameBoardArr[0][2] === gameBoard.gameBoardArr[2][0])) &&
+        gameBoard.gameBoardArr[1][1] !== ' ') {
+
+      if (gameBoard.gameBoardArr[1][1] === player1.symbol) {
+        alert(`Player 1 (${currentSymbol} wins)!`);
+      } else {
+        alert(`Player 2 (${currentSymbol} wins)!`);
+      }
+    }
+  };
+
+  const checkWinner = () => {
+    checkHorizontalWin();
+    checkVerticalWin();
+    checkDiagonalWin();
+  };
 })();
-
-gameBoard.renderBoard();
-
-// let runGame = true;
-// let turn;
-
-// while (runGame) {
-//   turn = player1.number;
-// }
