@@ -33,41 +33,47 @@ const gameBoard = (() => {
   };
 })();
 
-const Player = (number, symbol) => {
+const Player = (name, symbol) => {
   
   return {
-    number,
+    name,
     symbol
   };
 };
 
-const p1Symbol = prompt('Player 1, do you want to be \'X\' or \'O\'?');
-let player1 = Player(1, p1Symbol);
+const p1Name = prompt('First player, what is your name?');
+const p2Name = prompt('Second player, what is your name?');
+
+const p1Symbol = prompt(`${p1Name}, do you want to be \'X\' or \'O\'?`);
+let player1 = Player(p1Name, p1Symbol);
 let player2 = null;
 
 if (p1Symbol === 'x') {
-  player2 = Player(2, 'o');
+  player2 = Player(p2Name, 'o');
 } else {
-  player2 = Player(2, 'x');
+  player2 = Player(p2Name, 'x');
 }
 
 const displayController = (() => {
   let currentSymbol = player1.symbol;
+
+  const updateBoard = (currentPlayer, nextPlayer) => {
+    gameBoard.gameBoardArr[selectedRow][selectedColumn] = currentPlayer.symbol;
+    gameBoard.renderBoard();
+    setTimeout(() => { 
+      checkWinner();
+      currentSymbol = nextPlayer.symbol;
+     }, 50); 
+  };
 
   boardHTML.addEventListener('click', (e) => {
     selectedRow = e.target.getAttribute("data-row");
     selectedColumn = e.target.getAttribute("data-column");
 
     if (currentSymbol === player1.symbol) {
-      gameBoard.gameBoardArr[selectedRow][selectedColumn] = player1.symbol;
-      gameBoard.renderBoard();
-      setTimeout(() => { checkWinner(); }, 200); 
-      currentSymbol = player2.symbol;
+      updateBoard(player1, player2);
     } else {
-      gameBoard.gameBoardArr[selectedRow][selectedColumn] = player2.symbol;
-      gameBoard.renderBoard();
-      setTimeout(() => { checkWinner(); }, 200); 
-      currentSymbol = player1.symbol;
+      updateBoard(player2, player1);
     }
   });
 
@@ -76,9 +82,9 @@ const displayController = (() => {
       for (let i = 0; i < 3; i++) {
         if (row[i] === row[i + 1] && row[i] === row[i + 2] && row[i] !== ' ') {
           if (row[i] === player1.symbol) {
-            alert(`Player 1 (${player1.symbol} wins)!`);
+            alert(`${player1.name} (${player1.symbol}) wins!`);
           } else {
-            alert(`Player 2 (${player2.symbol} wins)!`);
+            alert(`${player2.name} (${player2.symbol}) wins!`);
           }
         }
       }
@@ -92,9 +98,9 @@ const displayController = (() => {
           gameBoard.gameBoardArr[0][i] !== ' ') {
             
         if (gameBoard.gameBoardArr[0][i] === player1.symbol) {
-          alert(`Player 1 (${currentSymbol} wins)!`);
+          alert(`${player1.name} (${currentSymbol}) wins!`);
         } else {
-          alert(`Player 2 (${currentSymbol} wins)!`);
+          alert(`${player2.name} (${currentSymbol}) wins!`);
         }
       }
     }
@@ -108,9 +114,9 @@ const displayController = (() => {
         gameBoard.gameBoardArr[1][1] !== ' ') {
 
       if (gameBoard.gameBoardArr[1][1] === player1.symbol) {
-        alert(`Player 1 (${currentSymbol} wins)!`);
+        alert(`${player1.name} (${currentSymbol}) wins!`);
       } else {
-        alert(`Player 2 (${currentSymbol} wins)!`);
+        alert(`${player2.name} (${currentSymbol}) wins!`);
       }
     }
   };
