@@ -99,3 +99,9 @@ table {
 .hidden {
   display: none;
 }
+
+.turn-display {
+  font-size: 3.5em;
+  text-align: center;
+  margin-top: 5%;
+}

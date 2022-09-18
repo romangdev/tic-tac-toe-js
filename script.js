@@ -3,6 +3,7 @@ const topRow = document.querySelectorAll('.top-row-location');
 const midRow = document.querySelectorAll('.mid-row-location');
 const bottomRow = document.querySelectorAll('.bottom-row-location');
 const winnerDisplay = document.querySelector('.winner-display');
+const turnDisplay = document.querySelector('.turn-display');
 
 let c1, c2, c3;
 let tmpDiv = null;
@@ -44,7 +45,6 @@ const gameBoard = (() => {
 })();
 
 const Player = (name, symbol) => {
-  
   return {
     name,
     symbol
@@ -66,6 +66,7 @@ if (p1Symbol === 'x') {
 
 const displayController = (() => {
   let currentSymbol = player1.symbol;
+  turnDisplay.textContent = `It's ${currentSymbol}'s turn!`;
 
   const updateBoard = (currentPlayer, nextPlayer) => {
     if (!(tmpDiv.classList.contains('filled'))) {
@@ -74,7 +75,8 @@ const displayController = (() => {
       setTimeout(() => { 
         checkWinner();
         currentSymbol = nextPlayer.symbol;
-        }, 50); 
+      }, 50); 
+      turnDisplay.textContent = `It's ${nextPlayer.symbol}'s turn!`;
     }
   };
 
