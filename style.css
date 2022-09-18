@@ -95,3 +95,7 @@ table {
   justify-self: center;
   margin-top: 40px;
 }
+
+.hidden {
+  display: none;
+}

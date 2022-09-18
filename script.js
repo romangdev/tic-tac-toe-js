@@ -4,15 +4,14 @@ const midRow = document.querySelectorAll('.mid-row-location');
 const bottomRow = document.querySelectorAll('.bottom-row-location');
 const winnerDisplay = document.querySelector('.winner-display');
 
+let c1, c2, c3;
+
 let tempWinner = document.createElement('p');
 tempWinner.classList.add('announced-winner');
-winnerDisplay.appendChild(tempWinner);
-tempWinner.textContent = `Roman (x) wins!`;
+winnerDisplay.prepend(tempWinner);
+// tempWinner.textContent = `Roman (x) wins!`;
 
-let replayBtn = document.createElement('button');
-replayBtn.classList.add('replay-button');
-replayBtn.textContent = 'Play Again?'
-winnerDisplay.appendChild(replayBtn);
+let replayBtn = document.querySelector('.replay-button');
 
 const gameBoard = (() => {
   let gameBoardArr = [
@@ -52,10 +51,10 @@ const Player = (name, symbol) => {
   };
 };
 
-// const p1Name = prompt('First player, what is your name?');
-// const p2Name = prompt('Second player, what is your name?');
+const p1Name = prompt('First player, what is your name?');
+const p2Name = prompt('Second player, what is your name?');
 
-// const p1Symbol = prompt(`${p1Name}, do you want to be \'X\' or \'O\'?`);
+const p1Symbol = prompt(`${p1Name}, do you want to be \'X\' or \'O\'?`);
 let player1 = Player(p1Name, p1Symbol);
 let player2 = null;
 
@@ -88,20 +87,31 @@ const displayController = (() => {
     }
   });
 
+  winnerDisplay.addEventListener('click', (e) => {
+    if (e.target.getAttribute('class') === 'replay-button') {
+      for (let i = 0; i < 3; i++) {
+        for (let n = 0; n < 3; n++) {
+          gameBoard.gameBoardArr[i][n] = ' ';
+        }
+      }
+      gameBoard.renderBoard();
+    }
+
+    winnerDisplay.classList.add('hidden');
+  });
+
   const checkHorizontalWin = () => {
     gameBoard.gameBoardArr.forEach((row) => {
       for (let i = 0; i < 3; i++) {
         if (row[i] === row[i + 1] && row[i] === row[i + 2] && row[i] !== ' ') {
           if (row[i] === player1.symbol) {
-            // alert(`${player1.name} (${player1.symbol}) wins!`);
-            let tempWinner = document.createElement('p');
-            winnerDisplay.appendChild(tempWinner);
-            winnerDisplay.textContent = `${player1.name} (${player1.symbol}) wins!`
-
+            tempWinner.textContent = `${player1.name} (${player1.symbol}) wins!`;
           } else {
-            alert(`${player2.name} (${player2.symbol}) wins!`);
+            tempWinner.textContent = `${player2.name} (${player2.symbol}) wins!`;
           }
-        }
+          winnerDisplay.classList.remove('hidden');
+          console.log('win');
+        } 
       }
     });
   };
@@ -113,10 +123,11 @@ const displayController = (() => {
           gameBoard.gameBoardArr[0][i] !== ' ') {
             
         if (gameBoard.gameBoardArr[0][i] === player1.symbol) {
-          alert(`${player1.name} (${currentSymbol}) wins!`);
+          tempWinner.textContent = `${player1.name} (${player1.symbol}) wins!`;
         } else {
-          alert(`${player2.name} (${currentSymbol}) wins!`);
+          tempWinner.textContent = `${player2.name} (${player2.symbol}) wins!`;
         }
+        winnerDisplay.classList.remove('hidden');
       }
     }
   };
@@ -129,10 +140,11 @@ const displayController = (() => {
         gameBoard.gameBoardArr[1][1] !== ' ') {
 
       if (gameBoard.gameBoardArr[1][1] === player1.symbol) {
-        alert(`${player1.name} (${currentSymbol}) wins!`);
+        tempWinner.textContent = `${player1.name} (${player1.symbol}) wins!`;
       } else {
-        alert(`${player2.name} (${currentSymbol}) wins!`);
+        tempWinner.textContent = `${player2.name} (${player2.symbol}) wins!`;
       }
+      winnerDisplay.classList.remove('hidden');
     }
   };
 
