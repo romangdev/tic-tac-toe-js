@@ -5,11 +5,11 @@ const bottomRow = document.querySelectorAll('.bottom-row-location');
 const winnerDisplay = document.querySelector('.winner-display');
 
 let c1, c2, c3;
+let tmpDiv = null;
 
 let tempWinner = document.createElement('p');
 tempWinner.classList.add('announced-winner');
 winnerDisplay.prepend(tempWinner);
-// tempWinner.textContent = `Roman (x) wins!`;
 
 let replayBtn = document.querySelector('.replay-button');
 
@@ -68,22 +68,28 @@ const displayController = (() => {
   let currentSymbol = player1.symbol;
 
   const updateBoard = (currentPlayer, nextPlayer) => {
-    gameBoard.gameBoardArr[selectedRow][selectedColumn] = currentPlayer.symbol;
-    gameBoard.renderBoard();
-    setTimeout(() => { 
-      checkWinner();
-      currentSymbol = nextPlayer.symbol;
-     }, 50); 
+    if (!(tmpDiv.classList.contains('filled'))) {
+      gameBoard.gameBoardArr[selectedRow][selectedColumn] = currentPlayer.symbol;
+      gameBoard.renderBoard();
+      setTimeout(() => { 
+        checkWinner();
+        currentSymbol = nextPlayer.symbol;
+        }, 50); 
+    }
   };
 
   boardHTML.addEventListener('click', (e) => {
     selectedRow = e.target.getAttribute("data-row");
     selectedColumn = e.target.getAttribute("data-column");
+    tmpDiv = document.querySelector(`[data-row="${selectedRow}"][data-column="${selectedColumn}"]`);
+
 
     if (currentSymbol === player1.symbol) {
       updateBoard(player1, player2);
+      tmpDiv.classList.add('filled');
     } else {
       updateBoard(player2, player1);
+      tmpDiv.classList.add('filled');
     }
   });
 
@@ -94,11 +100,20 @@ const displayController = (() => {
           gameBoard.gameBoardArr[i][n] = ' ';
         }
       }
+      removeFilledClass(topRow);
+      removeFilledClass(midRow);
+      removeFilledClass(bottomRow);
       gameBoard.renderBoard();
     }
 
     winnerDisplay.classList.add('hidden');
   });
+
+  const removeFilledClass = (row) => {
+    row.forEach((square) => {
+      square.classList.remove('filled');
+    })
+  };
 
   const checkHorizontalWin = () => {
     gameBoard.gameBoardArr.forEach((row) => {
