@@ -125,10 +125,11 @@ const displayController = (() => {
             tempWinner.textContent = `${player2.name} (${player2.symbol}) wins!`;
           }
           winnerDisplay.classList.remove('hidden');
-          console.log('win');
+          return true;
         } 
       }
     });
+    return false;
   };
 
   const checkVerticalWin = () => {
@@ -143,8 +144,10 @@ const displayController = (() => {
           tempWinner.textContent = `${player2.name} (${player2.symbol}) wins!`;
         }
         winnerDisplay.classList.remove('hidden');
+        return true;
       }
     }
+    return false;
   };
 
   const checkDiagonalWin = () => {
@@ -160,12 +163,33 @@ const displayController = (() => {
         tempWinner.textContent = `${player2.name} (${player2.symbol}) wins!`;
       }
       winnerDisplay.classList.remove('hidden');
+      return true;
+    }
+    return false;
+  };
+
+  const checkTie = () => {
+    let flag = true
+    for (let i = 0; i < 3; i++) {
+      for (let n = 0; n < 3; n++) {
+        if (gameBoard.gameBoardArr[i][n] === " ") {
+          flag = false;
+        }
+      }
+    }
+
+    if (flag === true) {
+      tempWinner.textContent = "It's a tie!";
+      winnerDisplay.classList.remove('hidden');
     }
   };
 
   const checkWinner = () => {
-    checkHorizontalWin();
-    checkVerticalWin();
-    checkDiagonalWin();
+    c1 = checkHorizontalWin();
+    c2 = checkVerticalWin();
+    c3 = checkDiagonalWin();
+    if (c1 === false && c2 === false && c3 === false) {
+      checkTie();
+    }
   };
 })();
